@@ -1,9 +1,7 @@
-<h1>
-  {{title}}
-</h1>
-
-<ul>
-  <li class="text" *ngFor="let item of items | async">
-    {{item.$key}} - {{item.$value}}
-  </li>
-</ul>
+<span class="slack-button ">
+	<a href="/" target="_blank" class="slack-btn">
+		<span class="slack-ico"></span>
+		<span class="slack-text">Slack</span>
+	</a>
+	<a href="/" target="_blank" class="slack-count">{{ (item | async)?.active }}/{{ (item | async)?.total }}</a>
+</span>
