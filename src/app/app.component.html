@@ -15,7 +15,7 @@
 		</p>
 		<form [formGroup]="slackinForm" (ngSubmit)="onSubmitRequest(slackinForm.value)">
 			<input type="email" placeholder="you@yourdomain.com" class="form-item" name="email" [formControl]="slackinForm.controls['email']" required>
-			<button type="submit" [ngClass]="buttonClass" [disabled]="!slackinForm.controls.email.valid||isDisabled()">{{ buttonMessage }}</button>
+			<button type="submit" [ngClass]="buttonClass" [disabled]="!slackinForm.valid||isDisabled()">{{ buttonMessage }}</button>
 		</form>
 	</div>
 </popover-content>
