@@ -1,7 +1,21 @@
-<span class="slack-button ">
-	<a href="/" target="_blank" class="slack-btn">
+<span class="slack-button" [popover]="myPopover">
+	<div class="slack-btn">
 		<span class="slack-ico"></span>
 		<span class="slack-text">Slack</span>
-	</a>
-	<a href="/" target="_blank" class="slack-count">{{ (item | async)?.active }}/{{ (item | async)?.total }}</a>
+	</div>
+	<div class="slack-count">
+		{{ (item | async)?.active }}/{{ (item | async)?.total }}
+	</div>
 </span>
+<popover-content #myPopover placement="bottom" [closeOnClickOutside]="true">
+	<div class="splash">
+		<p>Join <b>DarkEdges</b> on Slack.</p>
+		<p class="status">
+			<b class="slack-active">{{ (item | async)?.active }}</b> users online now of <b class="slack-total">{{ (item | async)?.total }}</b> registered.
+		</p>
+		<form (ngSubmit)="onSubmitRequest()" #slackinForm="ngForm">
+			<input type="email" placeholder="you@yourdomain.com" class="form-item" name="email" (ngModelChange)="resetDisabled($event)" [(ngModel)]="user.email" required>
+			<button type="submit" [ngClass]="buttonClass" [disabled]="!slackinForm.form.valid||isDisabled()">{{ buttonMessage }}</button>
+		</form>
+	</div>
+</popover-content>
