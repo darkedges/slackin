@@ -18,7 +18,7 @@ export class AppComponent {
 	 	this.buttonMessage = "Get My Invite"
 	 	this.buttonClass = "";
 	 	this.buttonDisabled=false;
-	 	this.user = { email: "nirving@darkedges.com"};
+	 	this.user = {email: ""};
 	}
 	item: FirebaseObjectObservable<any[]>;
 	user: Object = {};
@@ -33,7 +33,7 @@ export class AppComponent {
 	}
 	
 	onErrorResponse(response: ErrorResponse) {
-		this.buttonMessage = response.msg;
+		this.buttonMessage = (response.msg)?response.msg:"Server Error!";
 		this.buttonClass = "error";
 		this.buttonDisabled = true;
 		if (response.redirectUrl) {
@@ -48,6 +48,7 @@ export class AppComponent {
 	onSubmitRequest() {
 		this.buttonMessage = "Please Wait"
 		this.buttonDisabled = true;
+		console.log(this.user);
 		this.slackinService
 		  .submitRequest(this.user)
 		  .subscribe(

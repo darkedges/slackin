@@ -9,7 +9,7 @@ import { ErrorResponse } from './errorResponse';
 export class SlackinService {
 	constructor (private http: Http) {}
 
-	private slackinUrl = 'http://localhost:4280/slackin/invite.php';
+	private slackinUrl = 'https://www.darkedges.com/slackin/invite.php';
 
 	submitRequest(user: Object): Observable<Object> {
 		console.log("Submitting Request: "+JSON.stringify(user));
