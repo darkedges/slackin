@@ -13,9 +13,9 @@
 		<p class="status">
 			<b class="slack-active">{{ (item | async)?.active }}</b> users online now of <b class="slack-total">{{ (item | async)?.total }}</b> registered.
 		</p>
-		<form (ngSubmit)="onSubmitRequest()" #slackinForm="ngForm">
-			<input type="email" placeholder="you@yourdomain.com" class="form-item" name="email" (ngModelChange)="resetDisabled($event)" [(ngModel)]="user.email" required>
-			<button type="submit" [ngClass]="buttonClass" [disabled]="!slackinForm.form.valid||isDisabled()">{{ buttonMessage }}</button>
+		<form [formGroup]="slackinForm" (ngSubmit)="onSubmitRequest(slackinForm.value)">
+			<input type="email" placeholder="you@yourdomain.com" class="form-item" name="email" [formControl]="slackinForm.controls['email']" required>
+			<button type="submit" [ngClass]="buttonClass" [disabled]="!slackinForm.controls.email.valid||isDisabled()">{{ buttonMessage }}</button>
 		</form>
 	</div>
 </popover-content>

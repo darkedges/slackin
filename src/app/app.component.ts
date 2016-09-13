@@ -4,6 +4,8 @@ import { PopoverModule } from "ng2-popover";
 import { SlackinService } from './slackin.service';
 import { ErrorResponse } from './errorResponse';
 import { NgClass } from '@angular/common';
+import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
+import { SlackinUser } from './slackinuser.interface';
 
 @Component({
   selector: 'app-root',
@@ -13,18 +15,24 @@ import { NgClass } from '@angular/common';
   directives: [NgClass]
 })
 export class AppComponent {
-	constructor(private af: AngularFire, private slackinService: SlackinService) {
+	constructor(private af: AngularFire, private slackinService: SlackinService, fb: FormBuilder) {
 	 	this.item = af.database.object('stats');
-	 	this.buttonMessage = "Get My Invite"
-	 	this.buttonClass = "";
-	 	this.buttonDisabled=false;
-	 	this.user = {email: ""};
+	 	this.slackinForm = fb.group({  
+		      'email': ['']  
+    		});
+    		this.email = this.slackinForm.controls['email'];
+    		this.email.valueChanges.subscribe(  
+		      (value: string) => {  
+		        this.resetDisabled(value);
+		      }
+    		);
 	}
 	item: FirebaseObjectObservable<any[]>;
-	user: Object = {};
-	buttonMessage: string = "";
+	email: AbstractControl;
+	buttonMessage: string = "Get My Invite";
 	buttonClass: string = "";
 	buttonDisabled: boolean = false;
+	slackinForm: FormGroup;
 	
 	onSuccessResponse(response: Object) {
 		this.buttonMessage = "WOOT. Check your email!";
@@ -45,12 +53,11 @@ export class AppComponent {
 		return this.buttonDisabled
 	}
 	
-	onSubmitRequest() {
+	onSubmitRequest(model: SlackinUser) {
 		this.buttonMessage = "Please Wait"
 		this.buttonDisabled = true;
-		console.log(this.user);
 		this.slackinService
-		  .submitRequest(this.user)
+		  .submitRequest(model)
 		  .subscribe(
                      response => this.onSuccessResponse(response),
                      error =>  this.onErrorResponse(error)
